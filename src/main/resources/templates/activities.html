@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activities</title>
+<link rel="icon" type="image/png" href="/images/nfc.png">
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+	<div th:replace="fragments/style"></div>
+	<div th:replace="fragments/rewards_style"></div>
+
+	<div class="container">
+		<div class="tnt">
+			<i> Activities <img src="/images/point.png" class="tnt-icon"></i>
+			<!-- Add Activity Button -->
+			<div sec:authorize="isAuthenticated()" class="text-center">
+				<a href="/activities/add" class="btn-add">Add Activities</a>
+			</div>
+			<!-- Display Activities -->
+			<div id="overflow">
+				<div class="tnt-row">
+					<div class="card" th:each="activities : ${listActivities}">
+						<img
+							th:src="@{'/uploads/activities/' + ${activities.id} + '/' + ${activities.imagesName}}"
+							class="card-img-top">
+
+						<div class="card-body">
+							<p class="card-text">
+								Diploma: <span th:text="${activities.diploma}"></span>
+							</p>
+							<p class="card-text">
+								<span th:text="${activities.booth}"></span> Booth
+							</p>
+							<p class="card-text">
+								<span th:text="${activities.activity}"></span> Activity
+							</p>
+							<h5 class="card-title" th:text="${activities.description}"></h5>
+							<p class="card-text">
+								Points: +<span th:text="${activities.points}"></span> <img
+									src="/images/point.png" style="width: 30px; height: 30px;">
+							</p>
+
+							<div class="end">
+								<a sec:authorize="isAuthenticated()"
+									th:href="@{/activities/edit/{id}(id=${activities.id})}"
+									class="link">Edit |</a> <a sec:authorize="isAuthenticated()"
+									th:href="@{/activities/delete/{id}(id=${activities.id})}"
+									class="link">Delete</a>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- JavaScript -->
+	<script>
+		function filterRewards(order) {
+			const currentUrl = new URL(window.location.href);
+			currentUrl.searchParams.set('filter', order);
+			window.location.href = currentUrl.toString();
+		}
+	</script>
+</body>
+
+</html>
